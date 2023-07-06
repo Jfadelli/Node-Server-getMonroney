@@ -49,10 +49,10 @@ app.get('/getMonroney/:vin', async (req, res) => {
     res.status(500).json({ error: error.message });
     console.log('Updating bearerToken');
     bearerToken = await fetchBearerToken();
-    console.log('bearer token updated')
+    console.log('bearer token updated :', bearerToken)
   }
 });
-
+ 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
