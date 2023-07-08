@@ -15,7 +15,7 @@ async function fetchBearerToken () {
   const page = await browser.newPage()
 
   // Set the navigation timeout to a longer duration (e.g., 60 seconds)
-  await page.setDefaultNavigationTimeout(4000)
+  await page.setDefaultNavigationTimeout(8000)
 
   // Store the bearer token
   let bearerToken = ''
