@@ -8,7 +8,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.get('/getMonroney/:vin', (req, res) => {
-  document.write('Downloading PDF. Please wait.')
   // Extract the VIN from the URL params
   const { vin } = req.params;
 
