@@ -1,16 +1,22 @@
-require('dotenv').config();
-const express = require('express');
-const axios = require('axios');
-const app = express();
-const port = process.env.PORT || 3000;
+app.get('/getMonroney/:vin', async (req, res) => {
+  // Render an initial HTML response with a loading message
+  const initialHTML = `
+    <html>
+    <head>
+      <title>Download PDF</title>
+    </head>
+    <body>
+      <h1>Your file is currently downloading. Please wait...</h1>
+    </body>
+    </html>
+  `;
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+  // Send the initial HTML response to the client
+  res.send(initialHTML);
 
-app.get('/getMonroney/:vin', (req, res) => {
   // Extract the VIN from the URL params
   const { vin } = req.params;
-  res.send('Downloading PDF. Please wait...');
+
   // Define the request body with the VIN
   const requestBody = { vin };
 
@@ -30,25 +36,37 @@ app.get('/getMonroney/:vin', (req, res) => {
     responseType: 'json' // Set the response type to 'json'
   };
 
-  // Make the POST request to the endpoint
-  axios.post(endpointURL, requestBody, config)
-    .then(response => {
-      // Decode the base64-encoded PDF data
-      const decodedData = Buffer.from(response.data.base64MonroneyPDF, 'base64');
+  try {
+    // Make the POST request to the endpoint to fetch the PDF
+    const response = await axios.post(endpointURL, requestBody, config);
 
-      // Set the response headers for file download
-      res.setHeader('Content-Type', 'application/pdf');
-      res.setHeader('Content-Disposition', `attachment; filename="monroney ${vin}.pdf"`);
+    // Decode the base64-encoded PDF data
+    const decodedData = Buffer.from(response.data.base64MonroneyPDF, 'base64');
 
-      // Send the decoded data as the response
-      res.send(decodedData);
-    })
-    .catch(error => {
-      // Handle any errors that occurred during the request
-      res.status(500).json({ error: error.message });
-    });
-});
+    // Set the response headers for file download
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="monroney ${vin}.pdf"`);
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+    // Send the PDF data as the response
+    res.send(decodedData);
+  } catch (error) {
+    // Handle any errors that occurred during the request
+    console.log('Updating bearerToken');
+    bearerToken = await fetchBearerToken();
+    console.log('Bearer token updated');
+
+    // Update the HTML response with the error message
+    const errorHTML = `
+      <html>
+      <head>
+        <title>Error</title>
+      </head>
+      <body>
+        <h1>Error occurred. Please try again later.</h1>
+        <p>${error.message}</p>
+      </body>
+      </html>
+    `;
+    res.send(errorHTML);
+  }
 });
