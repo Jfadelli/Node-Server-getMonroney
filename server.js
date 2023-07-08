@@ -3,7 +3,7 @@ const express = require('express');
 const axios = require('axios');
 const app = express();
 const port = process.env.PORT || 3000;
-const {fetchBearerToken} = require('./fetchBearerToken')
+// const {fetchBearerToken} = require('./fetchBearerToken')
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -60,10 +60,11 @@ app.get('/getMonroney/:vin', async (req, res) => {
     // Send the PDF data as the response
     res.send(decodedData);
   } catch (error) {
-    // Handle any errors that occurred during the request
-    console.log('Updating bearerToken');
-    bearerToken = await fetchBearerToken();
-    console.log('Bearer token updated');
+    // // Handle any errors that occurred during the request
+    // console.log('Updating bearerToken');
+    // bearerToken = await fetchBearerToken();
+    // console.log('Bearer token updated');
+    console.log(error)
 
     // Update the HTML response with the error message
     const errorHTML = `
