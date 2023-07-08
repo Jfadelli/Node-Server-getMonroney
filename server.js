@@ -1,3 +1,12 @@
+require('dotenv').config();
+const express = require('express');
+const axios = require('axios');
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 app.get('/getMonroney/:vin', async (req, res) => {
   // Render an initial HTML response with a loading message
   const initialHTML = `
@@ -69,4 +78,9 @@ app.get('/getMonroney/:vin', async (req, res) => {
     `;
     res.send(errorHTML);
   }
+});
+
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
