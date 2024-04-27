@@ -9,7 +9,7 @@ async function fetchBearerToken() {
   const searchEndpoint = process.env.SEARCH_ENDPOINT
 
   // Launch a new browser instance
-  const browser = await puppeteer.launch({ headless: true })
+  const browser = await puppeteer.launch({args:['--no-sandbox']})
 
   // Create a new page
   const page = await browser.newPage()
