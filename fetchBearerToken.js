@@ -17,25 +17,6 @@ async function fetchBearerToken() {
   // Set the navigation timeout to a longer duration (e.g., 60 seconds)
   await page.setDefaultNavigationTimeout(4000)
 
-  // Store the bearer token
-  let bearerToken = ''
-
-  // Capture the request headers
-  page.on('request', async (request) => {
-    const url = request.url()
-
-    // Check if this is the request you're interested in
-    if (url === searchEndpoint) {
-      const headers = request.headers()
-      const authHeader = Object.entries(headers).find(([key]) => key.toLowerCase() === 'authorization')
-
-      if (authHeader) {
-        bearerToken = authHeader[1].replace('Bearer ', '')
-        return bearerToken
-      }
-    }
-  })
-
   // Go to the login page of the website
   await page.goto(loginUrl)
 
