@@ -1,8 +1,8 @@
 const puppeteer = require('puppeteer')
 require('dotenv').config()
 
-async function fetchBearerToken () {
-  const loginUrl =  process.env.URL_HOME
+async function fetchBearerToken() {
+  const loginUrl = process.env.URL_HOME
   const username = process.env.USER_NAME
   const password = process.env.PASSWORD
   const urlVehicleLocator = process.env.URL_VEHICLE_LOCATOR
@@ -54,13 +54,20 @@ async function fetchBearerToken () {
 
   // Wait for the navigation to complete
   await page.waitForNavigation()
+  await page.waitForNavigation({ url: 'https://www.kdealer.com/CommonDashboard' });
+  
+
+  const token = await page.evaluate(() => {
+    return sessionStorage.getItem('ACCESS_TOKEN');
+  });
 
   await page.goto(urlVehicleLocator)
 
   // Close the browser
   await browser.close()
-  return bearerToken
+  return token
 }
+// fetchBearerToken()
 module.exports = {
   fetchBearerToken
 }

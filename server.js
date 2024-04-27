@@ -4,7 +4,7 @@ const axios = require('axios');
 const { fetchBearerToken } = require('./fetchBearerToken');
 const app = express();
 const port = process.env.PORT || 3000;
-let bearerToken = process.env.BEARER_TOKEN; // Replace with your actual bearer token
+// let bearerToken = process.env.BEARER_TOKEN; // Replace with your actual bearer token
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -21,6 +21,11 @@ app.get('/getMonroney/:vin', async (req, res) => {
 
   // Define the URL for the endpoint that returns the PDF
   const endpointURL = process.env.GET_MONRONEY_ENDPOINT; // Replace with the actual endpoint URL
+
+  // Get bearer Token
+  console.log('Updating bearerToken');
+  const bearerToken = await fetchBearerToken();
+  console.log('bearer token updated :', bearerToken)
 
   // Define the POST request configuration
   const config = {
@@ -47,9 +52,6 @@ app.get('/getMonroney/:vin', async (req, res) => {
   } catch (error) {
     // Handle any errors that occurred during the request
     res.status(500).json({ error: error.message });
-    console.log('Updating bearerToken');
-    bearerToken = await fetchBearerToken();
-    console.log('bearer token updated :', bearerToken)
   }
 });
  
