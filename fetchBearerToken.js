@@ -15,7 +15,7 @@ async function fetchBearerToken() {
   const page = await browser.newPage()
 
   // Set the navigation timeout to a longer duration (e.g., 60 seconds)
-  await page.setDefaultNavigationTimeout(10000)
+  await page.setDefaultNavigationTimeout(20000)
 
   // Go to the login page of the website
   await page.goto(loginUrl)
@@ -46,6 +46,7 @@ async function fetchBearerToken() {
 
   // Close the browser
   await browser.close()
+  console.log('fetchBearerToken Success!')
   return token
 }
 // fetchBearerToken()
